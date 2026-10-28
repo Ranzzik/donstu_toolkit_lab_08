@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := all
-.PHONY: all clean rebuild run info
+.PHONY: all clean rebuild run info test check lint
 
 include mk/config.mk
 include mk/rules.mk
@@ -24,3 +24,30 @@ info:                ## показать значения переменных
 	@echo "OBJS      = $(OBJS)"
 	@echo "DEPS      = $(DEPS)"
 	@echo "MAKEFLAGS = $(MAKEFLAGS)"
+
+define run-test
+	@echo "== running $(1) =="
+	./$(BUILD)/$(1)$(EXE)
+endef
+
+test: all $(TEST_BIN)  ## запустить тесты
+	$(call run-test,test_calc)
+
+CHECK_DIRS    := src include
+CHECK_TARGETS := $(foreach d,$(CHECK_DIRS),check-$(d))
+
+check: $(CHECK_TARGETS)  ## проверить стиль исходников
+$(CHECK_TARGETS): check-%:
+	@echo "== checking $* =="
+	@grep -rnE '[[:space:]]+$$' $* && echo "FOUND trailing spaces" || echo "OK"
+
+# Цель lint-<файл> для каждого исходника
+define lint-rule
+.PHONY: lint-$(notdir $(1))
+lint-$(notdir $(1)): $(1)
+	@echo "checking $(1)"
+endef
+
+$(foreach f,$(SRCS),$(eval $(call lint-rule,$(f))))
+
+lint: $(addprefix lint-,$(notdir $(SRCS)))  ## проверить все исходники

@@ -4,6 +4,9 @@ $(TARGET): $(OBJS) | $(BUILD)
 $(BUILD)/%.o: src/%.c | $(BUILD)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+$(TEST_BIN): $(TEST_OBJS) $(filter-out $(BUILD)/main.o,$(OBJS)) | $(BUILD)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+
 $(BUILD):
 	mkdir -p $@
 
