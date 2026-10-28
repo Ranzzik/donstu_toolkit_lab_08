@@ -5,7 +5,7 @@ OPT       ?= -O2
 CFLAGS    := $(CSTD) $(WARN) $(OPT) -Iinclude -MMD -MP
 LDFLAGS   :=
 LDLIBS    := -lm
-# В Windows gcc добавляет к имени программы суффикс .exe
+# Р’ Windows gcc РґРѕР±Р°РІР»СЏРµС‚ Рє РёРјРµРЅРё РїСЂРѕРіСЂР°РјРјС‹ СЃСѓС„С„РёРєСЃ .exe
 ifeq ($(OS),Windows_NT)
     EXE := .exe
 endif
@@ -16,7 +16,7 @@ ARGS      ?= 1 50
 PROJECT_VERSION := 1.0.0
 GIT_REV   := $(shell git rev-parse --short HEAD 2>/dev/null || echo unknown)
 BUILD_DATE := $(shell date -u +%Y-%m-%dT%H:%M:%SZ)
-# Исходники: все .c из src/, кроме тестов (test_*.c)
+# РСЃС…РѕРґРЅРёРєРё: РІСЃРµ .c РёР· src/, РєСЂРѕРјРµ С‚РµСЃС‚РѕРІ (test_*.c)
 SRCS      := $(wildcard src/*.c)
 TEST_SRCS := $(filter src/test_%.c,$(SRCS))
 APP_SRCS  := $(filter-out $(TEST_SRCS),$(SRCS))
