@@ -1,0 +1,7 @@
+build/
+app
+app.exe
+*.o
+*.d
+*.tar.gz
+stage/

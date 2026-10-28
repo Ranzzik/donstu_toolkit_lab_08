@@ -1,0 +1,52 @@
+.PHONY: all clean rebuild run test help
+
+CC      := gcc
+CFLAGS  := -Wall -Wextra -Werror -std=c11 -Iinclude
+LDFLAGS :=
+LDLIBS  := -lm
+
+# В Windows gcc добавляет к имени программы суффикс .exe
+ifeq ($(OS),Windows_NT)
+    EXE := .exe
+endif
+
+TARGET := app$(EXE)
+TEST   := test_calc$(EXE)
+OBJS   := main.o calc.o util.o
+ARGS   ?= 1 50
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS)
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+
+%.o: src/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# Зависимости от заголовков (команд нет: они берутся из шаблона)
+main.o:      include/calc.h include/util.h
+calc.o:      include/calc.h include/util.h
+util.o:      include/util.h
+test_calc.o: include/calc.h
+
+$(TEST): test_calc.o calc.o util.o
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+
+clean:
+	rm -f $(TARGET) $(TEST) *.o
+
+rebuild: clean all
+
+run: all
+	./$(TARGET) $(ARGS)
+
+test: $(TEST)
+	./$(TEST)
+
+help:
+	@echo "Доступные цели:"
+	@echo "  make          - собрать проект"
+	@echo "  make run      - собрать и запустить"
+	@echo "  make clean    - удалить артефакты"
+	@echo "  make rebuild  - пересобрать с нуля"
+	@echo "  make test     - запустить тесты"
