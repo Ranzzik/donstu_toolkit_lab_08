@@ -9,6 +9,11 @@ static const double EXP_B     = 2.0;
 static const double EXP_SCALE = 50.0;
 static const double SQ_K      = 1.0;
 
+const char *calc_version(void)
+{
+    return "1.0.0";
+}
+
 double temp_sensor_calc(int select_sensor, int adc_value, int *info)
 {
     int adc = clamp_int(adc_value, 0, 100);
