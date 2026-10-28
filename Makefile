@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := all
 .DELETE_ON_ERROR:
-.PHONY: all clean rebuild run info test check lint debug release install uninstall dist
+.PHONY: all clean rebuild run info test check lint debug release install uninstall dist tools
 
 include mk/config.mk
 include mk/rules.mk
@@ -34,7 +34,7 @@ install: all         ## установить в DESTDIR+PREFIX
 uninstall:           ## удалить установленную программу
 	rm -f $(DESTDIR)$(PREFIX)/bin/$(TARGET)
 
-DIST_FILES := Makefile README.md mk src include
+DIST_FILES := Makefile README.md mk src include tools
 dist: clean          ## собрать архив с исходниками
 	tar czf $(TARGET)-$(VERSION).tar.gz $(DIST_FILES)
 
@@ -72,3 +72,7 @@ endef
 $(foreach f,$(SRCS),$(eval $(call lint-rule,$(f))))
 
 lint: $(addprefix lint-,$(notdir $(SRCS)))  ## проверить все исходники
+
+# Подпроект
+tools:               ## собрать вспомогательные утилиты
+	$(MAKE) -C tools
