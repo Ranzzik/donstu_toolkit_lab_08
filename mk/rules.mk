@@ -6,3 +6,6 @@ $(BUILD)/%.o: src/%.c | $(BUILD)
 
 $(BUILD):
 	mkdir -p $@
+
+$(BUILD)/version.mk: mk/version.mk.in | $(BUILD)
+	sed -e 's/@VERSION@/$(PROJECT_VERSION)/' 	    -e 's/@GIT_HASH@/$(GIT_REV)/' $< > $@

@@ -13,5 +13,8 @@ TARGET    := app$(EXE)
 BUILD     := build
 PREFIX    ?= /usr/local
 ARGS      ?= 1 50
+PROJECT_VERSION := 1.0.0
+GIT_REV   := $(shell git rev-parse --short HEAD 2>/dev/null || echo unknown)
+BUILD_DATE := $(shell date -u +%Y-%m-%dT%H:%M:%SZ)
 OBJS      := $(BUILD)/main.o $(BUILD)/calc.o $(BUILD)/util.o
 DEPS      := $(OBJS:.o=.d)
