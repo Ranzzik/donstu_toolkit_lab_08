@@ -1,4 +1,5 @@
 .DEFAULT_GOAL := all
+.DELETE_ON_ERROR:
 .PHONY: all clean rebuild run info test check lint debug release install uninstall dist
 
 include mk/config.mk
