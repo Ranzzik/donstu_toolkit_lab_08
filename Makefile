@@ -1,11 +1,18 @@
 .DEFAULT_GOAL := all
-.PHONY: all clean rebuild run info test check lint
+.PHONY: all clean rebuild run info test check lint debug release
 
 include mk/config.mk
 include mk/rules.mk
 include $(BUILD)/version.mk
 -include mk/help.mk
 -include $(DEPS)
+
+# Конфигурации сборки
+debug:   CFLAGS += -g -O0 -DDEBUG
+release: CFLAGS += -O3 -DNDEBUG
+$(BUILD)/%.o: CFLAGS += -fno-omit-frame-pointer
+
+debug release: all
 
 all: $(TARGET)
 
