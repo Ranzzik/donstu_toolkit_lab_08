@@ -5,6 +5,7 @@
 include mk/config.mk
 include mk/rules.mk
 include $(BUILD)/version.mk
+CFLAGS += -DGIT_HASH=\"$(GIT_HASH)" -DBUILD_DATE=\"$(BUILD_DATE)"
 -include mk/help.mk
 -include $(DEPS)
 
